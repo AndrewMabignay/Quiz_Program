@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,11 +20,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText bill, people;
-    private Spinner discount;
-    private RadioGroup addingUp;
+    private Spinner foodItem;
+    private String[] items;
+    private EditText pricePerItem, quantity;
+    private RadioGroup serviceCharge;
+    private RadioButton selectedServiceCharge;
     private TextView output;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +38,64 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void AddElement() {
-        bill = (EditText) findViewById(R.id.Bill);
-        people = (EditText) findViewById(R.id.People);
+        foodItem = (Spinner) findViewById(R.id.FoodItem);
+        items = new String[]{"Select an Item", "Burger", "Siomai", "Hotdog"};
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+        foodItem.setAdapter(dataAdapter);
+
+        pricePerItem = (EditText) findViewById(R.id.PricePerItem);
+
+        quantity = (EditText) findViewById(R.id.Quantity);
+
+        serviceCharge = (RadioGroup) findViewById(R.id.ServiceCharge);
+
         output = (TextView) findViewById(R.id.Output);
-//        originalPrice = (EditText) findViewById(R.id.Amount);
-//
-//        discount = (Spinner) findViewById(R.id.Discount);
-//        String[] discounts = new String[]{"Select a Discount", "10%", "20%", "30%"};
-//        ArrayAdapter<String> dataDiscounts = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, discounts);
-//        dataDiscounts.setDropDownViewResource(android.R.layout.simple_list_item_checked);
-//        discount.setAdapter(dataDiscounts);
-//
-//        output = (TextView) findViewById(R.id.Output);
+    }
+
+    private void ConditionElement() {
+
     }
 
     @SuppressLint("SetTextI18n")
     private void Interaction() {
-        bill.addTextChangedListener(new TextWatcher() {
+        foodItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (foodItem.getSelectedItem().toString().equals("Select an Item") || pricePerItem.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()) {
+                    output.setText("Fill up all fields");
+                    return;
+                }
+
+                int selectedId = serviceCharge.getCheckedRadioButtonId();
+                if (selectedId == -1) {
+                    output.setText("Fill up all fields!");
+                    return;
+                }
+
+                selectedServiceCharge = findViewById(selectedId);
+                String selectedActivity = selectedServiceCharge.getText().toString();
+                double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
+
+                switch (selectedActivity) {
+                    case "Dine-in":
+                        output.setText(String.valueOf(value));
+                        break;
+                    case "Take Out":
+                        output.setText(String.valueOf(value + 30.50));
+                        break;
+                    default:
+                        output.setText("Fill up all fields!");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        pricePerItem.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -60,18 +103,31 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (bill.getText().toString().isEmpty()) {
-                    output.setText(String.valueOf(0));
+                if (foodItem.getSelectedItem().toString().equals("Select an Item") || quantity.getText().toString().isEmpty() || pricePerItem.getText().toString().isEmpty()) {
+                    output.setText("Fill up all fields!");
                     return;
                 }
 
-                if (people.getText().toString().isEmpty()) {
-                    output.setText(String.valueOf(charSequence));
+                int selectedId = serviceCharge.getCheckedRadioButtonId();
+                if (selectedId == -1) {
+                    output.setText("Fill up all fields!");
                     return;
                 }
 
-                double value = Double.parseDouble(bill.getText().toString()) / Integer.parseInt(people.getText().toString());
-                output.setText(String.valueOf(value));
+                selectedServiceCharge = findViewById(selectedId);
+                String selectedActivity = selectedServiceCharge.getText().toString();
+                double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
+
+                switch (selectedActivity) {
+                    case "Dine-in":
+                        output.setText(String.valueOf(value));
+                        break;
+                    case "Take Out":
+                        output.setText(String.valueOf(value + 30.50));
+                        break;
+                    default:
+                        output.setText("Fill up all fields!");
+                }
             }
 
             @Override
@@ -80,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        people.addTextChangedListener(new TextWatcher() {
+        quantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -88,74 +144,65 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (bill.getText().toString().isEmpty() || people.getText().toString().isEmpty()) {
-                    output.setText(String.valueOf(bill.getText().toString()));
+                if (foodItem.getSelectedItem().toString().equals("Select an Item") || pricePerItem.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()) {
+                    output.setText("Fill up all fields");
                     return;
                 }
 
-                double value = Double.parseDouble(bill.getText().toString()) / Integer.parseInt(people.getText().toString());
-                output.setText(String.valueOf(value));
+                int selectedId = serviceCharge.getCheckedRadioButtonId();
+                if (selectedId == -1) {
+                    output.setText("Fill up all fields!");
+                    return;
+                }
+
+                selectedServiceCharge = findViewById(selectedId);
+                String selectedActivity = selectedServiceCharge.getText().toString();
+                double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
+
+                switch (selectedActivity) {
+                    case "Dine-in":
+                        output.setText(String.valueOf(value));
+                        break;
+                    case "Take Out":
+                        output.setText(String.valueOf(value + 30.50));
+                        break;
+                    default:
+                        output.setText("Fill up all fields!");
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+
+        serviceCharge.setOnCheckedChangeListener((group, checkedID) -> {
+            if (foodItem.getSelectedItem().toString().equals("Select an Item") || pricePerItem.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()) {
+                output.setText("Fill up all fields!");
+                return;
+            }
+
+            selectedServiceCharge = findViewById(checkedID);
+
+            if (selectedServiceCharge == null) {
+                output.setText("Fill up all fields!");
+                return;
+            }
+
+            String selectedActivity = selectedServiceCharge.getText().toString();
+            double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
+
+            switch (selectedActivity) {
+                case "Dine-in":
+                    output.setText(String.valueOf(value));
+                    break;
+                case "Take Out":
+                    output.setText(String.valueOf(value + 30.50));
+                    break;
+                default:
+                    output.setText("Fill up all fields!");
             }
         });
     }
-//        output.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if (originalPrice.getText().toString().isEmpty()) {
-//                    output.setText("Amount : 0 PHP");
-//                    return;
-//                }
-//
-//                output.setText("Amount : " + originalPrice.getText().toString() + " PHP");
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
-//
-//        discount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
-//                String selectedDiscount = parent.getItemAtPosition(i).toString();
-//
-//                switch (selectedDiscount) {
-//                    case "10%":
-//                        Calculation(10);
-//                        break;
-//                    case "20%":
-//                        Calculation(20);
-//                        break;
-//                    case "30%":
-//                        Calculation(30);
-//                        break;
-//                    default:
-//                        output.setText("Amount : " + (originalPrice.getText().toString().isEmpty() ? "0" : originalPrice.getText().toString()));
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
-//
-//    private void Calculation(double percent) {
-//        double amountPrice = Double.parseDouble(originalPrice.getText().toString());
-//        double computation = amountPrice - (amountPrice * (percent / 100));
-//
-//        output.setText("Amount : " + String.valueOf(computation));
-//    }
 }
