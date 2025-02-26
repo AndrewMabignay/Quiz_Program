@@ -6,62 +6,89 @@
     android:orientation="vertical"
 >
 
-    <!--  ============== EDIT TEXT ==============  -->
-    <EditText
-        android:id="@+id/UserInput"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
-        android:inputType="text"
-    />
-
-    <!--  ============== SPINNER ==============  -->
-    <Spinner
-        android:id="@+id/SpinnerChoose"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
-    />
-
-    <!--  ============== RADIO GROUP ==============  -->
-    <RadioGroup
-        android:id="@+id/RadioGroup"
+    <!-- ============ LOAN AMOUNT ============ -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
         android:layout_gravity="center"
-        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="20dp"
     >
-
-        <!--  ============== RADIO BUTTON ==============  -->
-        <RadioButton
-            android:id="@+id/Hello"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello"
-            android:padding="10dp"
+            android:text="Loan Amount : "
         />
 
-        <!--  ============== RADIO BUTTON ==============  -->
-        <RadioButton
-            android:id="@+id/World"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/LoanAmount"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="World"
-            android:padding="10dp"
+            android:inputType="number"
         />
-    </RadioGroup>
+    </LinearLayout>
 
-    <!--  ============== TEXTVIEW | OUTPUT ==============  -->
-    <TextView
-        android:id="@+id/Output"
-        android:layout_width="match_parent"
+    <!-- ============ LOAN TERM ============ -->
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Output : "
-        android:gravity="center_vertical"
-        android:padding="20dp"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="20dp"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loan Term : "
+        />
+
+        <Spinner
+            android:id="@+id/LoanTerm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginVertical="20dp"
+    >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Interest Type : "
+        />
+
+        <RadioGroup
+            android:id="@+id/InterestType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        >
+            <RadioButton
+                android:id="@+id/Fixed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fixed"
+            />
+
+            <RadioButton
+                android:id="@+id/Variable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Variable"
+            />
+        </RadioGroup>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/EstimatedMonthlyPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Output : Testing"
     />
 </LinearLayout>

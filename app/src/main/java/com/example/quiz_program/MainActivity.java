@@ -16,12 +16,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText userInput;
-    private Spinner spinner;
+    private EditText loanAmount;
+    private Spinner loanTerm;
 
-    private RadioGroup radioGroup;
-    private RadioButton selectedRadioButton;
-    private TextView output;
+    private RadioGroup interestType;
+    private RadioButton selectedInterestType;
+    private TextView estimatedMonthlyPayment;
 
 
     @Override
@@ -38,25 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void AddElement() {
-        /* ============ 1. USER INPUT ============ */
-        userInput = (EditText) findViewById(R.id.UserInput);
+        /* ============ 1. LOAN AMOUNT ============ */
+        loanAmount = (EditText) findViewById(R.id.LoanAmount);
 
-        /* ============ 2. SPINNER WITH ADAPTER ============ */
-        spinner = (Spinner) findViewById(R.id.SpinnerChoose);
-        String[] spinnerType = {"Select a Spinner", "Spinner 1", "Spinner 2", "Spinner 3"};
-        ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerType);
-        spinner.setAdapter(itemAdapter);
+        /* ============ 2. LOAN TERM ============ */
+        loanTerm = (Spinner) findViewById(R.id.LoanTerm);
+        String[] loanTermType = {"Select a Loan Term", "1 year", "2 years", "3 years"};
+        ArrayAdapter<String> loanAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, loanTermType);
+        loanTerm.setAdapter(loanAdapter);
 
-        /* ============ 3. RADIO GROUP ============ */
-        radioGroup = (RadioGroup) findViewById(R.id.RadioGroup);
+        /* ============ 3. INTEREST TYPE ============ */
+        interestType = (RadioGroup) findViewById(R.id.InterestType);
 
-        /* ============ 4. OUTPUT ============ */
-        output = (TextView) findViewById(R.id.Output);
+        /* ============ 4. ESTIMATED MONTHLY PAYMENT ============ */
+        estimatedMonthlyPayment = (TextView) findViewById(R.id.EstimatedMonthlyPayment);
     }
 
     @SuppressLint("SetTextI18n")
     private void Interaction() {
-        userInput.addTextChangedListener(new TextWatcher() {
+        loanAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        loanTerm.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 FunctionFieldsEmpty();
@@ -85,29 +85,49 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        radioGroup.setOnCheckedChangeListener((group, checkedID) -> {
+        interestType.setOnCheckedChangeListener((group, checkedID) -> {
             FunctionFieldsEmpty();
         });
     }
 
     @SuppressLint("SetTextI18n")
     private void FunctionFieldsEmpty() {
-        if (userInput.getText().toString().isEmpty() || spinner.getSelectedItem().toString().equals("Select a Spinner")) {
-            output.setText("Eligibility User Input and Spinner : Fill up all requirements!");
+        if (loanAmount.getText().toString().isEmpty() || loanTerm.getSelectedItem().toString().equals("Select a Loan Term")) {
+            estimatedMonthlyPayment.setText("Fill up all fields!");
             return;
         }
 
-        int selectedButtonID = radioGroup.getCheckedRadioButtonId();
-        if (selectedButtonID == -1) {
-            output.setText("Eligibility Radio Group and Button : Fill up all requirements!");
+        int selectedInterestTypeID = interestType.getCheckedRadioButtonId();
+        if (selectedInterestTypeID == -1) {
+            estimatedMonthlyPayment.setText("Fill up all fields!");
             return;
         }
 
-        // TESTING
-        selectedRadioButton = findViewById(selectedButtonID);
-        String finalSelectedButton = selectedRadioButton.getText().toString();
+        int year = 0;
 
-        output.setText("Eligibility Filled up : " + finalSelectedButton + " | " + userInput.getText().toString() + " | " + spinner.getSelectedItem());
+        switch (loanTerm.getSelectedItem().toString()) {
+            case "1 year":
+                year = 1;
+                break;
+            case "2 years":
+                year = 2;
+                break;
+            case "3 years":
+                year = 3;
+                break;
+        }
+
+        selectedInterestType = findViewById(selectedInterestTypeID);
+        String finalSelectedInterestType = selectedInterestType.getText().toString();
+
+        switch (finalSelectedInterestType) {
+            case "Fixed":
+                estimatedMonthlyPayment.setText("Estimated Monthly Payment : " + (Double.parseDouble(loanAmount.getText().toString()) * year));
+                break;
+            case "Variable":
+                estimatedMonthlyPayment.setText("Estimated Monthly Payment : " + (Double.parseDouble(loanAmount.getText().toString()) * year) + " (May vary over time)");
+                break;
+        }
     }
 }
 
