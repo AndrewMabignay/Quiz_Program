@@ -6,97 +6,62 @@
     android:orientation="vertical"
 >
 
-    <!-- GPA -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center"
-    >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GPA : "
-        />
-
-        <EditText
-            android:id="@+id/GPA"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-        />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center"
-    >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scholarship Type : "
-        />
-
-        <Spinner
-            android:id="@+id/Scholarship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <!--  ============== EDIT TEXT ==============  -->
+    <EditText
+        android:id="@+id/UserInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:gravity="center"
-    >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Are you a working student?"
-        />
-
-        <RadioGroup
-            android:id="@+id/Verify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-        >
-
-            <RadioButton
-                android:id="@+id/Yes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-            />
-
-            <RadioButton
-                android:id="@+id/No"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No"
-            />
-
-        </RadioGroup>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/Eligibility"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Eligibility : "
-        android:layout_gravity="center"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="10dp"
+        android:inputType="text"
     />
 
+    <!--  ============== SPINNER ==============  -->
+    <Spinner
+        android:id="@+id/SpinnerChoose"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="10dp"
+    />
+
+    <!--  ============== RADIO GROUP ==============  -->
+    <RadioGroup
+        android:id="@+id/RadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+    >
+
+        <!--  ============== RADIO BUTTON ==============  -->
+        <RadioButton
+            android:id="@+id/Hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello"
+            android:padding="10dp"
+        />
+
+        <!--  ============== RADIO BUTTON ==============  -->
+        <RadioButton
+            android:id="@+id/World"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="World"
+            android:padding="10dp"
+        />
+    </RadioGroup>
+
+    <!--  ============== TEXTVIEW | OUTPUT ==============  -->
+    <TextView
+        android:id="@+id/Output"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Output : "
+        android:gravity="center_vertical"
+        android:padding="20dp"
+    />
 </LinearLayout>

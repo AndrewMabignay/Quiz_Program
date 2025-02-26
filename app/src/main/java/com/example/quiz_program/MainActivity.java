@@ -13,20 +13,15 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText gpa;
-    private Spinner scholarshipType;
+    private EditText userInput;
+    private Spinner spinner;
 
-    private RadioGroup workingStudent;
-    private RadioButton selectedAnswer;
-
-    private TextView verification;
+    private RadioGroup radioGroup;
+    private RadioButton selectedRadioButton;
+    private TextView output;
 
 
     @Override
@@ -34,27 +29,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // ELEMENT INSTANTIATION
         AddElement();
+
+        // FUNCTIONS
         Interaction();
     }
 
     @SuppressLint("SetTextI18n")
     private void AddElement() {
-        gpa = (EditText) findViewById(R.id.GPA);
+        /* ============ 1. USER INPUT ============ */
+        userInput = (EditText) findViewById(R.id.UserInput);
 
-        scholarshipType = (Spinner) findViewById(R.id.Scholarship);
-        String[] type = {"Select an Academic", "Academic", "Non-academic"};
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, type);
-        scholarshipType.setAdapter(typeAdapter);
+        /* ============ 2. SPINNER WITH ADAPTER ============ */
+        spinner = (Spinner) findViewById(R.id.SpinnerChoose);
+        String[] spinnerType = {"Select a Spinner", "Spinner 1", "Spinner 2", "Spinner 3"};
+        ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerType);
+        spinner.setAdapter(itemAdapter);
 
-        workingStudent = (RadioGroup) findViewById(R.id.Verify);
+        /* ============ 3. RADIO GROUP ============ */
+        radioGroup = (RadioGroup) findViewById(R.id.RadioGroup);
 
-        verification = (TextView) findViewById(R.id.Eligibility);
+        /* ============ 4. OUTPUT ============ */
+        output = (TextView) findViewById(R.id.Output);
     }
 
     @SuppressLint("SetTextI18n")
     private void Interaction() {
-        gpa.addTextChangedListener(new TextWatcher() {
+        userInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -62,23 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (gpa.getText().toString().isEmpty() || scholarshipType.getSelectedItem().toString().equals("Select an Academic")) {
-                    verification.setText("Eligibility : Fill up all requirements!");
-                    return;
-                }
-
-                int selectIDStudent = workingStudent.getCheckedRadioButtonId();
-                if (selectIDStudent == -1) {
-                    verification.setText("Eligibility : Fill up all requirements!");
-                    return;
-                }
-
-
-                // TESTING
-                selectedAnswer = findViewById(selectIDStudent);
-                String finalSelectedAnswer = selectedAnswer.getText().toString();
-
-                verification.setText("Eligibility 2 : " + finalSelectedAnswer);
+                FunctionFieldsEmpty();
             }
 
             @Override
@@ -87,24 +73,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        scholarshipType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (gpa.getText().toString().isEmpty() || scholarshipType.getSelectedItem().toString().equals("Select an Academic")) {
-                    verification.setText("Eligibility : Fill up all requirements!");
-                    return;
-                }
-
-                int selectIDStudent = workingStudent.getCheckedRadioButtonId();
-                if (selectIDStudent == -1) {
-                    verification.setText("Eligibility : Fill up all requirements!");
-                    return;
-                }
-
-                selectedAnswer = findViewById(selectIDStudent);
-                String finalSelectedAnswer = selectedAnswer.getText().toString();
-
-                verification.setText("Eligibility 3: " + finalSelectedAnswer);
+                FunctionFieldsEmpty();
             }
 
             @Override
@@ -113,40 +85,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        workingStudent.setOnCheckedChangeListener((group, checkedID) -> {
-            if (gpa.getText().toString().isEmpty() || scholarshipType.getSelectedItem().toString().equals("Select an Academic")) {
-                verification.setText("Eligibility : Fill up all requirements!");
-                return;
-            }
-
-            int selectIDStudent = workingStudent.getCheckedRadioButtonId();
-            if (selectIDStudent == -1) {
-                verification.setText("Eligibility : Fill up all requirements!");
-                return;
-            }
-
-            RadioConditionInteraction(selectIDStudent);
+        radioGroup.setOnCheckedChangeListener((group, checkedID) -> {
+            FunctionFieldsEmpty();
         });
     }
 
     @SuppressLint("SetTextI18n")
-    private void RadioConditionInteraction(int select) {
-        selectedAnswer = findViewById(select);
-        String finalSelectedAnswer = selectedAnswer.getText().toString();
-
-        double gpaValue = Double.parseDouble(gpa.getText().toString());
-
-        if (gpaValue >= 3.8 && finalSelectedAnswer.equals("Yes")) {
-            verification.setText("Eligibility : 50% Discount");
-        } else if (gpaValue >= 3.5 && finalSelectedAnswer.equals("Yes")) {
-            verification.setText("Eligibility : 20% Discount");
-        } else {
-            verification.setText("Eligibility : Not Qualified!");
+    private void FunctionFieldsEmpty() {
+        if (userInput.getText().toString().isEmpty() || spinner.getSelectedItem().toString().equals("Select a Spinner")) {
+            output.setText("Eligibility User Input and Spinner : Fill up all requirements!");
+            return;
         }
-    }
 
-    private void SpinnerConditionInteraction() {
+        int selectedButtonID = radioGroup.getCheckedRadioButtonId();
+        if (selectedButtonID == -1) {
+            output.setText("Eligibility Radio Group and Button : Fill up all requirements!");
+            return;
+        }
 
+        // TESTING
+        selectedRadioButton = findViewById(selectedButtonID);
+        String finalSelectedButton = selectedRadioButton.getText().toString();
+
+        output.setText("Eligibility Filled up : " + finalSelectedButton + " | " + userInput.getText().toString() + " | " + spinner.getSelectedItem());
     }
 }
 
