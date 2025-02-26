@@ -20,12 +20,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    private Spinner foodItem;
-    private String[] items;
-    private EditText pricePerItem, quantity;
-    private RadioGroup serviceCharge;
-    private RadioButton selectedServiceCharge;
-    private TextView output;
+    private EditText gpa;
+    private Spinner scholarshipType;
+
+    private RadioGroup workingStudent;
+    private RadioButton selectedAnswer;
+
+    private TextView verification;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,55 +40,71 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void AddElement() {
-        foodItem = (Spinner) findViewById(R.id.FoodItem);
-        items = new String[]{"Select an Item", "Burger", "Siomai", "Hotdog"};
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
-        foodItem.setAdapter(dataAdapter);
+        gpa = (EditText) findViewById(R.id.GPA);
 
-        pricePerItem = (EditText) findViewById(R.id.PricePerItem);
+        scholarshipType = (Spinner) findViewById(R.id.Scholarship);
+        String[] type = {"Select an Academic", "Academic", "Non-academic"};
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, type);
+        scholarshipType.setAdapter(typeAdapter);
 
-        quantity = (EditText) findViewById(R.id.Quantity);
+        workingStudent = (RadioGroup) findViewById(R.id.Verify);
 
-        serviceCharge = (RadioGroup) findViewById(R.id.ServiceCharge);
-
-        output = (TextView) findViewById(R.id.Output);
-    }
-
-    private void ConditionElement() {
-
+        verification = (TextView) findViewById(R.id.Eligibility);
     }
 
     @SuppressLint("SetTextI18n")
     private void Interaction() {
-        foodItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        gpa.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (gpa.getText().toString().isEmpty() || scholarshipType.getSelectedItem().toString().equals("Select an Academic")) {
+                    verification.setText("Eligibility : Fill up all requirements!");
+                    return;
+                }
+
+                int selectIDStudent = workingStudent.getCheckedRadioButtonId();
+                if (selectIDStudent == -1) {
+                    verification.setText("Eligibility : Fill up all requirements!");
+                    return;
+                }
+
+
+                // TESTING
+                selectedAnswer = findViewById(selectIDStudent);
+                String finalSelectedAnswer = selectedAnswer.getText().toString();
+
+                verification.setText("Eligibility 2 : " + finalSelectedAnswer);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        scholarshipType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (foodItem.getSelectedItem().toString().equals("Select an Item") || pricePerItem.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()) {
-                    output.setText("Fill up all fields");
+                if (gpa.getText().toString().isEmpty() || scholarshipType.getSelectedItem().toString().equals("Select an Academic")) {
+                    verification.setText("Eligibility : Fill up all requirements!");
                     return;
                 }
 
-                int selectedId = serviceCharge.getCheckedRadioButtonId();
-                if (selectedId == -1) {
-                    output.setText("Fill up all fields!");
+                int selectIDStudent = workingStudent.getCheckedRadioButtonId();
+                if (selectIDStudent == -1) {
+                    verification.setText("Eligibility : Fill up all requirements!");
                     return;
                 }
 
-                selectedServiceCharge = findViewById(selectedId);
-                String selectedActivity = selectedServiceCharge.getText().toString();
-                double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
+                selectedAnswer = findViewById(selectIDStudent);
+                String finalSelectedAnswer = selectedAnswer.getText().toString();
 
-                switch (selectedActivity) {
-                    case "Dine-in":
-                        output.setText(String.valueOf(value));
-                        break;
-                    case "Take Out":
-                        output.setText(String.valueOf(value + 30.50));
-                        break;
-                    default:
-                        output.setText("Fill up all fields!");
-                }
+                verification.setText("Eligibility 3: " + finalSelectedAnswer);
             }
 
             @Override
@@ -95,114 +113,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        pricePerItem.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (foodItem.getSelectedItem().toString().equals("Select an Item") || quantity.getText().toString().isEmpty() || pricePerItem.getText().toString().isEmpty()) {
-                    output.setText("Fill up all fields!");
-                    return;
-                }
-
-                int selectedId = serviceCharge.getCheckedRadioButtonId();
-                if (selectedId == -1) {
-                    output.setText("Fill up all fields!");
-                    return;
-                }
-
-                selectedServiceCharge = findViewById(selectedId);
-                String selectedActivity = selectedServiceCharge.getText().toString();
-                double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
-
-                switch (selectedActivity) {
-                    case "Dine-in":
-                        output.setText(String.valueOf(value));
-                        break;
-                    case "Take Out":
-                        output.setText(String.valueOf(value + 30.50));
-                        break;
-                    default:
-                        output.setText("Fill up all fields!");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        quantity.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (foodItem.getSelectedItem().toString().equals("Select an Item") || pricePerItem.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()) {
-                    output.setText("Fill up all fields");
-                    return;
-                }
-
-                int selectedId = serviceCharge.getCheckedRadioButtonId();
-                if (selectedId == -1) {
-                    output.setText("Fill up all fields!");
-                    return;
-                }
-
-                selectedServiceCharge = findViewById(selectedId);
-                String selectedActivity = selectedServiceCharge.getText().toString();
-                double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
-
-                switch (selectedActivity) {
-                    case "Dine-in":
-                        output.setText(String.valueOf(value));
-                        break;
-                    case "Take Out":
-                        output.setText(String.valueOf(value + 30.50));
-                        break;
-                    default:
-                        output.setText("Fill up all fields!");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        serviceCharge.setOnCheckedChangeListener((group, checkedID) -> {
-            if (foodItem.getSelectedItem().toString().equals("Select an Item") || pricePerItem.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()) {
-                output.setText("Fill up all fields!");
+        workingStudent.setOnCheckedChangeListener((group, checkedID) -> {
+            if (gpa.getText().toString().isEmpty() || scholarshipType.getSelectedItem().toString().equals("Select an Academic")) {
+                verification.setText("Eligibility : Fill up all requirements!");
                 return;
             }
 
-            selectedServiceCharge = findViewById(checkedID);
-
-            if (selectedServiceCharge == null) {
-                output.setText("Fill up all fields!");
+            int selectIDStudent = workingStudent.getCheckedRadioButtonId();
+            if (selectIDStudent == -1) {
+                verification.setText("Eligibility : Fill up all requirements!");
                 return;
             }
 
-            String selectedActivity = selectedServiceCharge.getText().toString();
-            double value = Double.parseDouble(quantity.getText().toString()) * Double.parseDouble(pricePerItem.getText().toString());
-
-            switch (selectedActivity) {
-                case "Dine-in":
-                    output.setText(String.valueOf(value));
-                    break;
-                case "Take Out":
-                    output.setText(String.valueOf(value + 30.50));
-                    break;
-                default:
-                    output.setText("Fill up all fields!");
-            }
+            RadioConditionInteraction(selectIDStudent);
         });
     }
+
+    @SuppressLint("SetTextI18n")
+    private void RadioConditionInteraction(int select) {
+        selectedAnswer = findViewById(select);
+        String finalSelectedAnswer = selectedAnswer.getText().toString();
+
+        double gpaValue = Double.parseDouble(gpa.getText().toString());
+
+        if (gpaValue >= 3.8 && finalSelectedAnswer.equals("Yes")) {
+            verification.setText("Eligibility : 50% Discount");
+        } else if (gpaValue >= 3.5 && finalSelectedAnswer.equals("Yes")) {
+            verification.setText("Eligibility : 20% Discount");
+        } else {
+            verification.setText("Eligibility : Not Qualified!");
+        }
+    }
+
+    private void SpinnerConditionInteraction() {
+
+    }
 }
+

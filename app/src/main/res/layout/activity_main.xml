@@ -5,61 +5,97 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
 >
-    <Spinner
-        android:id="@+id/FoodItem"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_gravity="center"
-    />
 
-    <EditText
-        android:id="@+id/PricePerItem"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_gravity="center"
-        android:inputType="number"
-    />
-
-    <EditText
-        android:id="@+id/Quantity"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_gravity="center"
-        android:inputType="number"
-    />
-
-    <RadioGroup
-        android:id="@+id/ServiceCharge"
+    <!-- GPA -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
     >
-        <RadioButton
-            android:id="@+id/DineIn"
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dine-in"
-            android:layout_margin="10dp"
+            android:text="GPA : "
         />
 
-        <RadioButton
-            android:id="@+id/Takeout"
+        <EditText
+            android:id="@+id/GPA"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+    >
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Take Out"
-            android:layout_margin="10dp"
+            android:text="Scholarship Type : "
         />
-    </RadioGroup>
+
+        <Spinner
+            android:id="@+id/Scholarship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+    >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Are you a working student?"
+        />
+
+        <RadioGroup
+            android:id="@+id/Verify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        >
+
+            <RadioButton
+                android:id="@+id/Yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+            />
+
+            <RadioButton
+                android:id="@+id/No"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+            />
+
+        </RadioGroup>
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/Output"
+        android:id="@+id/Eligibility"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Output : 0"
+        android:text="Eligibility : "
         android:layout_gravity="center"
     />
 
